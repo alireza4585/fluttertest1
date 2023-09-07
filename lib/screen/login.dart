@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/bloc/auth/bloc/auth_bloc.dart';
 import 'package:fluttertest1/screen/signup.dart';
+import 'package:fluttertest1/util/snakbar.dart';
 
 // ignore: camel_case_types
 class Login_Screen extends StatefulWidget {
@@ -25,25 +27,42 @@ class _Login_ScreenState extends State<Login_Screen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(width: 96.w, height: 100.h),
-            Center(
-              child: Image.asset(
-                'images/logo.jpg',
-              ),
-            ),
-            SizedBox(height: 120.h),
-            textfild(email, _focusNode1, 'Email', Icons.email),
-            SizedBox(height: 19.h),
-            textfild(password, _focusNode2, 'password', Icons.lock),
-            SizedBox(height: 19.h),
-            forget(),
-            SizedBox(height: 20.h),
-            signIN(),
-            SizedBox(height: 15.h),
-            have(),
-          ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                SizedBox(width: 96.w, height: 100.h),
+                Center(
+                  child: Image.asset(
+                    'images/logo.jpg',
+                  ),
+                ),
+                SizedBox(height: 120.h),
+                textfild(email, _focusNode1, 'Email', Icons.email),
+                SizedBox(height: 19.h),
+                textfild(password, _focusNode2, 'password', Icons.lock),
+                SizedBox(height: 19.h),
+                forget(),
+                SizedBox(height: 20.h),
+                if (state is AuthInitial) ...{
+                  signIN(email.text, password.text),
+                } else if (state is AuthLoding) ...{
+                  const CircularProgressIndicator(color: Colors.blue)
+                } else if (state is AuthLogin) ...[
+                  state.login.fold((left) {
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      dialogBuilder(context, left);
+                    });
+                    return signIN(email.text, password.text);
+                  }, (right) {
+                    return const Text('');
+                  })
+                ],
+                SizedBox(height: 15.h),
+                have(),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -95,13 +114,13 @@ class _Login_ScreenState extends State<Login_Screen> {
     );
   }
 
-  Widget signIN() {
+  Widget signIN(String email, String password) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: GestureDetector(
         onTap: () {
-          // BlocProvider.of<AuthBloc>(context)
-          //     .add(AuthRequest(password.text, true, email.text, password.text));
+          BlocProvider.of<AuthBloc>(context)
+              .add(Auth_event(email, false, password, password));
         },
         child: Container(
           alignment: Alignment.center,

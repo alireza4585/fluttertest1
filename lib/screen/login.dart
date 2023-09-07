@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/data/bloc/auth/bloc/auth_bloc.dart';
+import 'package:fluttertest1/screen/signup.dart';
 
+// ignore: camel_case_types
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
 
@@ -73,7 +77,11 @@ class _Login_ScreenState extends State<Login_Screen> {
             style: TextStyle(color: Colors.grey[700], fontSize: 14.sp),
           ),
           GestureDetector(
-            // onTap: widget.show,
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                      create: (context) => AuthBloc(),
+                      child: Sign_Screen(),
+                    ))),
             child: Text(
               "Sign up",
               style: TextStyle(
@@ -104,7 +112,7 @@ class _Login_ScreenState extends State<Login_Screen> {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Text(
-            'Sign In',
+            'Log in',
             style: TextStyle(
               color: Colors.white,
               fontSize: 23.sp,

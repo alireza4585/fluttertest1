@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/screen/home.dart';
+import 'package:fluttertest1/screen/profile.dart';
 
 class Navigation_Widget extends StatefulWidget {
   const Navigation_Widget({super.key});
@@ -77,7 +78,7 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.favorite,
+                Icons.favorite_outline,
                 size: 28.0.w,
               ),
               label: '',
@@ -101,6 +102,7 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
           Home_Screen(),
           Home_Screen(),
           Home_Screen(),
+          Profile_Screen(),
         ],
       ),
     );

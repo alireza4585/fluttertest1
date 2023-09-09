@@ -49,7 +49,7 @@ class _Sign_ScreenState extends State<Sign_Screen> {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(width: 96.w, height: 100.h),
+            SizedBox(width: 96.w, height: 70.h),
             InkWell(
               onTap: () async {
                 File _imagefilee = await utilwidgets().uploadImage('gallery');
@@ -60,25 +60,34 @@ class _Sign_ScreenState extends State<Sign_Screen> {
               child: CircleAvatar(
                 radius: 32.r,
                 backgroundColor: Colors.grey,
-                child: CircleAvatar(
-                  radius: 30.r,
-                  backgroundColor: Colors.white,
-                  backgroundImage: const AssetImage('images/person.png'),
-                ),
+                child: _imagefile == null
+                    ? CircleAvatar(
+                        radius: 30.r,
+                        backgroundColor: Colors.white,
+                        backgroundImage: const AssetImage('images/person.png'),
+                      )
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundColor: Colors.white,
+                        backgroundImage: Image.file(
+                          _imagefile!,
+                          fit: BoxFit.cover,
+                        ).image,
+                      ),
               ),
             ),
-            SizedBox(height: 120.h),
+            SizedBox(height: 80.h),
             textfild(email, _focusNode1, 'Email', Icons.email),
             SizedBox(height: 19.h),
             textfild(password, _focusNode2, 'password', Icons.lock),
             SizedBox(height: 19.h),
             textfild(
                 passwordConfirme, _focusNode3, 'passwordConfirme', Icons.lock),
+            SizedBox(height: 19.h),
             textfild(username, _focusNode4, 'username', Icons.person),
             SizedBox(height: 19.h),
             textfild(bio, _focusNode5, 'bio', Icons.abc),
             SizedBox(height: 25.h),
-            SizedBox(height: 40.h),
             signIN(email.text, password.text, passwordConfirme.text,
                 username.text, bio.text, _imagefile ?? File('')),
             SizedBox(height: 15.h),

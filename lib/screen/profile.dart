@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/data/firebase_servise/firestor.dart';
+import 'package:fluttertest1/data/model/user_model.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -12,17 +13,32 @@ class Profile_Screen extends StatefulWidget {
 }
 
 class _Profile_ScreenState extends State<Profile_Screen> {
+  Usermodel? _usermodel;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
+
+  getdata() async {
+    final Firestor_firebase _firestor_firebase = Firestor_firebase();
+    Usermodel user = await _firestor_firebase.getusers();
+    setState(() {
+      _usermodel = user;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: StreamBuilder<QuerySnapshot>(stream: await _firestore.collection('users').doc(_auth.currentUser!.uid), builder: builder),
+              child: head(_usermodel!),
             ),
             SliverToBoxAdapter(
-              child: bio(),
+              child: bio(_usermodel!),
             ),
           ],
         ),
@@ -30,18 +46,18 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     );
   }
 
-  Widget bio() {
+  Widget bio(Usermodel user) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 13.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'username',
+            user.username,
             style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
           ),
           Text(
-            'bio',
+            user.bi,
             style: TextStyle(fontSize: 12.sp),
           ),
         ],
@@ -49,7 +65,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     );
   }
 
-  Widget head() {
+  Widget head(Usermodel user) {
     return Row(
       children: [
         Padding(
@@ -57,7 +73,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           child: CircleAvatar(
             radius: 43.r,
             backgroundColor: Colors.white,
-            backgroundImage: const AssetImage('images/person.png'),
+            backgroundImage: NetworkImage(user.profileImage),
           ),
         ),
         Column(
@@ -74,13 +90,13 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 ),
                 SizedBox(width: 53.w),
                 Text(
-                  '0',
+                  user.following.length.toString(),
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(width: 53.w),
                 Text(
-                  '0',
+                  user.followers.length.toString(),
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),

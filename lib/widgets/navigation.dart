@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/screen/home.dart';
 import 'package:fluttertest1/screen/profile.dart';
 
@@ -96,12 +98,15 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
       body: PageView(
         controller: pageController,
         onPageChanged: onPageChanged,
-        children: const [
-          Home_Screen(),
-          Home_Screen(),
-          Home_Screen(),
-          Home_Screen(),
-          Profile_Screen(),
+        children: [
+          const Home_Screen(),
+          const Home_Screen(),
+          const Home_Screen(),
+          const Home_Screen(),
+          BlocProvider(
+            create: (context) => ProfileBloc(),
+            child: const Profile_Screen(),
+          ),
         ],
       ),
     );

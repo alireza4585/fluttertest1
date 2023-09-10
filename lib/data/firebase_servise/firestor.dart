@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest1/data/model/user_model.dart';
+import 'package:fluttertest1/util/exception.dart';
 
 class Firestor_firebase {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -23,17 +24,23 @@ class Firestor_firebase {
     return true;
   }
 
-  Future<Usermodel> getusers(AsyncSnapshot snapshot) async {
-    final user =
-        await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
-    final snapuser = user.data()!;
-    return Usermodel(
-      snapuser['username'],
-      snapuser['bio'],
-      snapuser['email'],
-      snapuser['profileImage'],
-      snapuser['followers'],
-      snapuser['following'],
-    );
+  Future<Usermodel> getusers() async {
+    try {
+      final user = await _firestore
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .get();
+      final snapuser = user.data()!;
+      return Usermodel(
+        snapuser['username'],
+        snapuser['bio'],
+        snapuser['email'],
+        snapuser['profileImage'],
+        snapuser['followers'],
+        snapuser['following'],
+      );
+    } on FirebaseException catch (e) {
+      throw exceptions(e.message.toString());
+    }
   }
 }

@@ -1,4 +1,3 @@
-part of 'profile_bloc.dart';
+abstract class ProfileEvent {}
 
-@immutable
-sealed class ProfileEvent {}
+class profileImitilzeData extends ProfileEvent {}

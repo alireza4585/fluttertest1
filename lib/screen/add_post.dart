@@ -196,25 +196,28 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ],
                 ),
               ),
-              GridView.builder(
-                  shrinkWrap: true,
-                  controller: widget.scrollCtr,
-                  itemCount: _mediaList.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 1.h,
-                      crossAxisSpacing: 2.w),
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            indexx = index;
-                            _file = path[index];
-                            print(_file);
-                          });
-                        },
-                        child: _mediaList[index]);
-                  }),
+              Padding(
+                padding: EdgeInsets.only(bottom: 20.h, top: 4.h),
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    controller: widget.scrollCtr,
+                    itemCount: _mediaList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 1.h,
+                        crossAxisSpacing: 2.w),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              indexx = index;
+                              _file = path[index];
+                              print(_file);
+                            });
+                          },
+                          child: _mediaList[index]);
+                    }),
+              ),
             ],
           ),
         ),

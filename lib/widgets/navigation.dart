@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
+import 'package:fluttertest1/screen/add_post.dart';
 import 'package:fluttertest1/screen/home.dart';
 import 'package:fluttertest1/screen/profile.dart';
 
@@ -101,7 +102,7 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
         children: [
           const Home_Screen(),
           const Home_Screen(),
-          const Home_Screen(),
+          AddPostScreen(),
           const Home_Screen(),
           BlocProvider(
             create: (context) => ProfileBloc(),

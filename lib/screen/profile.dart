@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_event.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_state.dart';
-import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/data/model/user_model.dart';
 
 class Profile_Screen extends StatefulWidget {

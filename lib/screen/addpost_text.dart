@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/data/firebase_servise/storage.dart';
 
 class AddpostTextScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class AddpostTextScreen extends StatefulWidget {
 class _AddpostTextScreenState extends State<AddpostTextScreen> {
   final caption = TextEditingController();
   final location = TextEditingController();
+  bool isloding = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +33,21 @@ class _AddpostTextScreenState extends State<AddpostTextScreen> {
           Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () async {
+                  setState(() {
+                    isloding = true;
+                  });
                   String post_url = await StorageMethods()
                       .uploadImageToStorage('post', widget._file);
+                  await Firestor_firebase().createPost(
+                    postImage: post_url,
+                    caption: caption.text,
+                    location: location.text,
+                  );
+
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
                 },
                 child: Text(
                   'Share',
@@ -49,62 +62,67 @@ class _AddpostTextScreenState extends State<AddpostTextScreen> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                child: Row(
+        child: isloding
+            ? const Center(
+                child: CircularProgressIndicator(color: Colors.black),
+              )
+            : Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 65.h,
-                      width: 65.w,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        image: DecorationImage(
-                          image: FileImage(widget._file),
-                          fit: BoxFit.cover,
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 65.h,
+                            width: 65.w,
+                            decoration: BoxDecoration(
+                              color: Colors.amber,
+                              image: DecorationImage(
+                                image: FileImage(widget._file),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          SizedBox(
+                            height: 60.h,
+                            width: 280.w,
+                            child: TextField(
+                              controller: caption,
+                              maxLines: 4,
+                              decoration: const InputDecoration(
+                                hintText: 'Write acaption...',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: SizedBox(
+                        height: 30.h,
+                        width: 280.w,
+                        child: TextField(
+                          controller: location,
+                          maxLines: 1,
+                          decoration: const InputDecoration(
+                            hintText: 'Add location',
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 10.w),
-                    SizedBox(
-                      height: 60.h,
-                      width: 280.w,
-                      child: TextField(
-                        controller: caption,
-                        maxLines: 4,
-                        decoration: const InputDecoration(
-                          hintText: 'Write acaption...',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
+                    const Divider(),
                   ],
                 ),
               ),
-              const Divider(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: SizedBox(
-                  height: 30.h,
-                  width: 280.w,
-                  child: TextField(
-                    controller: location,
-                    maxLines: 1,
-                    decoration: const InputDecoration(
-                      hintText: 'Add location',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-              const Divider(),
-            ],
-          ),
-        ),
       ),
     );
   }

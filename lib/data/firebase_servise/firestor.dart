@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertest1/data/model/user_model.dart';
 
 class Firestor_firebase {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -19,5 +21,12 @@ class Firestor_firebase {
       'following': [],
     });
     return true;
+  }
+
+// await _firestore.collection('users').doc(_auth.currentUser!.uid)
+  Future<List<Usermodel>> getusers(AsyncSnapshot snapshot) async {
+    return snapshot.data!.docs
+        .map<Usermodel>((jsonObject) => Usermodel.fromJson(jsonObject))
+        .toList();
   }
 }

@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/firebase_servise/auth.dart';
 import 'package:fluttertest1/util/imagepicker.dart';
-import 'package:fluttertest1/util/snakbar.dart';
-import 'package:image_picker/image_picker.dart';
 
 // ignore: camel_case_types
 class Sign_Screen extends StatefulWidget {

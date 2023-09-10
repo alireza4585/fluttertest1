@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertest1/auth/main_page.dart';
 import 'package:fluttertest1/firebase_options.dart';
-import 'package:fluttertest1/screen/register_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

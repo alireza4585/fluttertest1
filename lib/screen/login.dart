@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertest1/screen/signup.dart';
-import 'package:fluttertest1/util/snakbar.dart';
 
 // ignore: camel_case_types
 class Login_Screen extends StatefulWidget {

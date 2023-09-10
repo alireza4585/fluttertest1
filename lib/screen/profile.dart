@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +19,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: head(),
+              child: StreamBuilder<QuerySnapshot>(stream: await _firestore.collection('users').doc(_auth.currentUser!.uid), builder: builder),
             ),
             SliverToBoxAdapter(
               child: bio(),

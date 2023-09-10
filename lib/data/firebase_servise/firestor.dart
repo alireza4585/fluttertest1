@@ -23,10 +23,17 @@ class Firestor_firebase {
     return true;
   }
 
-// await _firestore.collection('users').doc(_auth.currentUser!.uid)
-  Future<List<Usermodel>> getusers(AsyncSnapshot snapshot) async {
-    return snapshot.data!.docs
-        .map<Usermodel>((jsonObject) => Usermodel.fromJson(jsonObject))
-        .toList();
+  Future<Usermodel> getusers(AsyncSnapshot snapshot) async {
+    final user =
+        await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
+    final snapuser = user.data()!;
+    return Usermodel(
+      snapuser['username'],
+      snapuser['bio'],
+      snapuser['email'],
+      snapuser['profileImage'],
+      snapuser['followers'],
+      snapuser['following'],
+    );
   }
 }

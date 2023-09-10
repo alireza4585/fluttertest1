@@ -1,106 +1,219 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:photo_manager/photo_manager.dart';
 
 class AddPostScreen extends StatefulWidget {
+  final ScrollController? scrollCtr;
+
+  const AddPostScreen({
+    Key? key,
+    this.scrollCtr,
+  }) : super(key: key);
+
   @override
   _AddPostScreenState createState() => _AddPostScreenState();
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  TextEditingController captionController = TextEditingController();
-  List<File> selectedImages = [];
+  final List<Widget> _mediaList = [];
+  final List<File> path = [];
+  File? _file;
+  int currentPage = 0;
+  int? lastPage;
 
-  Future<void> _selectImages() async {
-    final picker = ImagePicker();
-    final pickedImages = await picker.pickMultiImage();
+  @override
+  void initState() {
+    super.initState();
+    _fetchNewMedia();
+  }
 
-    if (pickedImages != null) {
+  handleScrollEvent(ScrollNotification scroll) {
+    if (scroll.metrics.pixels / scroll.metrics.maxScrollExtent > 0.33) {
+      if (currentPage != lastPage) {
+        _fetchNewMedia();
+      }
+    }
+  }
+
+  _fetchNewMedia() async {
+    lastPage = currentPage;
+    final PermissionState ps = await PhotoManager.requestPermissionExtend();
+    if (ps.isAuth) {
+      // success
+//load the album list
+      List<AssetPathEntity> albums =
+          await PhotoManager.getAssetPathList(onlyAll: true);
+      print(albums);
+      List<AssetEntity> media = await albums[0]
+          .getAssetListPaged(size: 60, page: currentPage); //preloading files
+      print(media);
+      for (var asset in media) {
+        if (asset.type == AssetType.image) {
+          // Get the file path for image assets
+          final file = await asset.file;
+          if (file != null) {
+            path.add(File(file.path));
+            print(path);
+            _file = path[0];
+            print(_file);
+          }
+        }
+      }
+
+      List<Widget> temp = [];
+      for (var asset in media) {
+        // path.add(asset.title!);
+        temp.add(
+          FutureBuilder(
+            future: asset.thumbnailDataWithSize(
+                const ThumbnailSize(200, 200)), //resolution of thumbnail
+            builder:
+                (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done)
+                // ignore: curly_braces_in_flow_control_structures
+                return Container(
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Image.memory(
+                          snapshot.data!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      if (asset.type == AssetType.video)
+                        const Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 5, bottom: 5),
+                            child: Icon(
+                              Icons.videocam,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              return Container();
+            },
+          ),
+        );
+      }
       setState(() {
-        selectedImages
-            .addAll(pickedImages.map((pickedImage) => File(pickedImage.path)));
+        _mediaList.addAll(temp);
+        currentPage++;
       });
+    } else {
+      // fail
+      /// if result is fail, you can call `PhotoManager.openSetting();`  to open android/ios applicaton's setting to get permission
     }
   }
 
   @override
+  int indexx = 0;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Post'),
+        centerTitle: false,
+        title: const Text(
+          'New Post',
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              // Handle the submission of the post here
-              String caption = captionController.text;
-              // You can access selectedImages for the selected photos
-              print('Caption: $caption');
-              for (var imageFile in selectedImages) {
-                print('Selected Image: ${imageFile.path}');
-                // Upload or process the image as needed
-              }
-              // Close the screen or navigate to another screen
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: captionController,
-                      decoration: InputDecoration(
-                        hintText: 'Write a caption...',
-                      ),
-                      maxLines: null, // Allow multiple lines for captions
-                    ),
-                  ),
-                  if (selectedImages.isNotEmpty)
-                    Container(
-                      height: 200.0, // Adjust the height as needed
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: selectedImages.length,
-                        itemBuilder: (context, index) {
-                          final imageFile = selectedImages[index];
-                          return Container(
-                            margin: EdgeInsets.all(8.0),
-                            width: 200.0, // Adjust the width as needed
-                            child: Image.file(
-                              imageFile,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                ],
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: GestureDetector(
+                onTap: () {},
+                child: Text(
+                  'Nex',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
+          )
         ],
+        elevation: 0,
+        backgroundColor: Colors.white,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _selectImages,
-        child: Icon(Icons.add),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 375.h,
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    controller: widget.scrollCtr,
+                    itemCount: _mediaList.isEmpty ? _mediaList.length : 1,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisSpacing: 1.h,
+                        crossAxisSpacing: 1.w),
+                    itemBuilder: (BuildContext context, int index) {
+                      return _mediaList[indexx];
+                    }),
+              ),
+              Container(
+                width: double.infinity,
+                height: 40.h,
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    SizedBox(width: 10.w),
+                    Text(
+                      'Recent',
+                      style: TextStyle(
+                          fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: CircleAvatar(
+                        radius: 15.r,
+                        backgroundColor: Colors.grey.shade600,
+                        child: Icon(
+                          Icons.camera_alt_outlined,
+                          color: Colors.white,
+                          size: 20.w,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              GridView.builder(
+                  shrinkWrap: true,
+                  controller: widget.scrollCtr,
+                  itemCount: _mediaList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 1.h,
+                      crossAxisSpacing: 2.w),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            indexx = index;
+                            _file = path[index];
+                            print(_file);
+                          });
+                        },
+                        child: _mediaList[index]);
+                  }),
+            ],
+          ),
+        ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed
-    captionController.dispose();
-    super.dispose();
   }
 }

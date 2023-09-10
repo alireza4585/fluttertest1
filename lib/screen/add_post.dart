@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/screen/addpost_text.dart';
 
 import 'package:photo_manager/photo_manager.dart';
 
@@ -130,7 +131,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AddpostTextScreen(_file!)));
+                },
                 child: Text(
                   'Nex',
                   style: TextStyle(
@@ -156,9 +160,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     controller: widget.scrollCtr,
                     itemCount: _mediaList.isEmpty ? _mediaList.length : 1,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        mainAxisSpacing: 1.h,
-                        crossAxisSpacing: 1.w),
+                      crossAxisCount: 1,
+                      mainAxisSpacing: 1.h,
+                      crossAxisSpacing: 1.w,
+                    ),
                     itemBuilder: (BuildContext context, int index) {
                       return _mediaList[indexx];
                     }),

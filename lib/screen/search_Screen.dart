@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertest1/screen/post_screan.dart';
 import 'package:fluttertest1/util/image_save.dart';
+import 'package:fluttertest1/widgets/post.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
 
-  @override
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,20 +28,27 @@ class SearchScreen extends StatelessWidget {
                 }
                 return SliverPadding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       ((context, index) {
                         final snap = snapshot.data!.docs[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.r),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PostScreen(snap.data()),
+                            ));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.r),
+                              ),
                             ),
-                          ),
-                          child: CachedImage(
-                            imageUrl: snap['postImage'],
+                            child: CachedImage(
+                              imageUrl: snap['postImage'],
+                            ),
                           ),
                         );
                       }),
@@ -70,7 +78,7 @@ class SearchScreen extends StatelessWidget {
   Widget _getSearchBox() {
     return Container(
       height: 46.h,
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 12.h),
+      margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(13.r)),
         color: Color(0xff272B40),

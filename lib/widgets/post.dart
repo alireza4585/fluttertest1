@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/util/image_save.dart';
+import 'package:intl/intl.dart';
 
 class Post_widgets extends StatefulWidget {
   final snapshot;
@@ -15,6 +15,7 @@ class _Post_widgetsState extends State<Post_widgets> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 375.w,
@@ -115,6 +116,15 @@ class _Post_widgetsState extends State<Post_widgets> {
                 ),
               ),
             ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 15.w, bottom: 8.h, top: 20.h),
+          child: Text(
+            DateFormat.yMMMd().format(widget.snapshot['time'].toDate()),
+            style: TextStyle(
+              fontSize: 11.sp,
+            ),
           ),
         ),
         const Divider()

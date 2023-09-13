@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/data/firebase_servise/storage.dart';
 
+// ignore: must_be_immutable
 class AddpostTextScreen extends StatefulWidget {
   File _file;
   AddpostTextScreen(this._file, {super.key});

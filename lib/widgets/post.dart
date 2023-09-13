@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/util/image_save.dart';
 
 class Post_widgets extends StatefulWidget {
-  const Post_widgets({super.key});
+  final snapshot;
+  Post_widgets(this.snapshot, {super.key});
 
   @override
   State<Post_widgets> createState() => _Post_widgetsState();
@@ -22,14 +25,16 @@ class _Post_widgetsState extends State<Post_widgets> {
               leading: CircleAvatar(
                 radius: 16.r,
                 backgroundColor: Colors.white,
-                backgroundImage: const AssetImage('images/person.png'),
+                backgroundImage: NetworkImage(
+                  widget.snapshot['profileImage'],
+                ),
               ),
               title: Text(
-                'name',
+                widget.snapshot['username'],
                 style: TextStyle(fontSize: 13.sp),
               ),
               subtitle: Text(
-                'location',
+                widget.snapshot['location'],
                 style: TextStyle(fontSize: 11.sp),
               ),
               trailing: const Icon(Icons.more_horiz),
@@ -39,11 +44,8 @@ class _Post_widgetsState extends State<Post_widgets> {
         Container(
           width: double.infinity,
           height: 375.h,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/image.jpeg'),
-              fit: BoxFit.cover,
-            ),
+          child: CachedImage(
+            imageUrl: widget.snapshot['postImage'],
           ),
         ),
         Container(
@@ -72,14 +74,33 @@ class _Post_widgetsState extends State<Post_widgets> {
                 ],
               ),
               Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 13.5.h),
+                padding: EdgeInsets.only(left: 19.w, top: 13.5.h, bottom: 5.h),
                 child: Text(
-                  'Like: 22',
+                  widget.snapshot['like'].length.toString(),
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.snapshot['username'] + ' ',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      widget.snapshot['caption'],
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(

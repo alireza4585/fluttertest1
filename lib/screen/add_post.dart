@@ -50,19 +50,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
 //load the album list
       List<AssetPathEntity> albums =
           await PhotoManager.getAssetPathList(onlyAll: true);
-      print(albums);
+
       List<AssetEntity> media = await albums[0]
           .getAssetListPaged(size: 60, page: currentPage); //preloading files
-      print(media);
+
       for (var asset in media) {
         if (asset.type == AssetType.image) {
           // Get the file path for image assets
           final file = await asset.file;
           if (file != null) {
             path.add(File(file.path));
-            print(path);
             _file = path[0];
-            print(_file);
           }
         }
       }
@@ -117,6 +115,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   @override
+  // ignore: override_on_non_overriding_member
   int indexx = 0;
   Widget build(BuildContext context) {
     return Scaffold(

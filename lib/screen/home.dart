@@ -49,8 +49,8 @@ class _Home_ScreenState extends State<Home_Screen> {
                     if (!snapshot.hasData) {
                       return CircularProgressIndicator();
                     }
-                    final getpost = Firestor_firebase().getAllPost(snapshot);
-                    print(getpost[0].caption);
+                    // final getpost = Firestor_firebase().getAllPost(snapshot);
+                    // print(getpost[0].caption);
                     return Post_widgets(snapshot.data!.docs[index].data());
                   },
                   childCount:

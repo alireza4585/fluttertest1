@@ -6,6 +6,7 @@ import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/screen/add_post.dart';
 import 'package:fluttertest1/screen/home.dart';
 import 'package:fluttertest1/screen/profile.dart';
+import 'package:fluttertest1/screen/search_Screen.dart';
 
 class Navigation_Widget extends StatefulWidget {
   const Navigation_Widget({super.key});
@@ -101,8 +102,8 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
         onPageChanged: onPageChanged,
         children: [
           const Home_Screen(),
-          const Home_Screen(),
-          AddPostScreen(),
+          SearchScreen(),
+          const AddPostScreen(),
           const Home_Screen(),
           BlocProvider(
             create: (context) => ProfileBloc(),

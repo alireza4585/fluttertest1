@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ignore: must_be_immutable
 class CachedImage extends StatelessWidget {
   String? imageUrl;
   CachedImage({super.key, this.imageUrl});

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertest1/data/model/post_model.dart';
+
 import 'package:fluttertest1/data/model/user_model.dart';
 import 'package:fluttertest1/util/exception.dart';
 import 'package:uuid/uuid.dart';

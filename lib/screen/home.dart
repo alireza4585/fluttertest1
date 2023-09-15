@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/widgets/post.dart';
 
 class Home_Screen extends StatefulWidget {
@@ -16,9 +14,11 @@ class Home_Screen extends StatefulWidget {
 }
 
 class _Home_ScreenState extends State<Home_Screen> {
+  // ignore: unused_field
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
+  // ignore: override_on_non_overriding_member
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
     return Scaffold(

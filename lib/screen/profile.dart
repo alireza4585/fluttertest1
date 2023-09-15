@@ -5,6 +5,7 @@ import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_event.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_state.dart';
 import 'package:fluttertest1/data/model/user_model.dart';
+import 'package:fluttertest1/util/image_save.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -60,10 +61,14 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 10.h),
-              child: CircleAvatar(
-                radius: 43.r,
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(user.profileImage),
+              child: ClipOval(
+                child: SizedBox(
+                  height: 80.h,
+                  width: 80.w,
+                  child: CachedImage(
+                    imageUrl: user.profileImage,
+                  ),
+                ),
               ),
             ),
             Column(

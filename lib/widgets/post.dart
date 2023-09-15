@@ -23,13 +23,22 @@ class _Post_widgetsState extends State<Post_widgets> {
           color: Colors.white,
           child: Center(
             child: ListTile(
-              leading: CircleAvatar(
-                radius: 16.r,
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(
-                  widget.snapshot['profileImage'],
+              leading: ClipOval(
+                child: SizedBox(
+                  height: 35.h,
+                  width: 35.w,
+                  child: CachedImage(
+                    imageUrl: widget.snapshot['profileImage'],
+                  ),
                 ),
               ),
+              // leading: CircleAvatar(
+              //   radius: 16.r,
+              //   backgroundColor: Colors.white,
+              //   backgroundImage: NetworkImage(
+              // widget.snapshot['profileImage'],
+              //   ),
+              // ),
               title: Text(
                 widget.snapshot['username'],
                 style: TextStyle(fontSize: 13.sp),

@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertest1/screen/post_screan.dart';
 import 'package:fluttertest1/util/image_save.dart';
-import 'package:fluttertest1/widgets/post.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -56,8 +55,8 @@ class SearchScreen extends StatelessWidget {
                     ),
                     gridDelegate: SliverQuiltedGridDelegate(
                       crossAxisCount: 3,
-                      mainAxisSpacing: 5.h,
-                      crossAxisSpacing: 5.h,
+                      mainAxisSpacing: 3.h,
+                      crossAxisSpacing: 3.h,
                       repeatPattern: QuiltedGridRepeatPattern.inverted,
                       pattern: const [
                         QuiltedGridTile(2, 1),
@@ -77,17 +76,20 @@ class SearchScreen extends StatelessWidget {
 
   Widget _getSearchBox() {
     return Container(
-      height: 46.h,
+      height: 36.h,
       margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(13.r)),
-        color: Color(0xff272B40),
+        color: Colors.grey[350],
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Row(
           children: [
-            const Icon(Icons.search),
+            const Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
             SizedBox(
               width: 15.w,
             ),

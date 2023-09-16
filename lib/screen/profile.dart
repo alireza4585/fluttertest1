@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +30,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFAFAFA),
       body: SafeArea(
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
@@ -52,6 +52,29 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                     );
                   })
                 },
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 343.w,
+                      height: 29.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.r),
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      child: Text(
+                        'Edit Profile',
+                        style: TextStyle(
+                            fontSize: 13.sp, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
                 StreamBuilder(
                   stream: _firebaseFirestore
                       .collection('posts')
@@ -64,8 +87,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                     }
                     post = snapshot.data!.docs.length;
                     return SliverPadding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
                       sliver: SliverGrid(
                         delegate: SliverChildBuilderDelegate(
                           ((context, index) {
@@ -177,7 +199,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           ],
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 13.w),
+          padding: EdgeInsets.symmetric(horizontal: 17.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

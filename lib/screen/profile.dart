@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +8,7 @@ import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_event.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_state.dart';
 import 'package:fluttertest1/data/model/user_model.dart';
+import 'package:fluttertest1/screen/post_screan.dart';
 import 'package:fluttertest1/util/image_save.dart';
 
 class Profile_Screen extends StatefulWidget {
@@ -15,6 +19,9 @@ class Profile_Screen extends StatefulWidget {
 }
 
 class _Profile_ScreenState extends State<Profile_Screen> {
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  int post = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +51,55 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                       child: head(right),
                     );
                   })
-                }
+                },
+                StreamBuilder(
+                  stream: _firebaseFirestore
+                      .collection('posts')
+                      .where('uid', isEqualTo: _auth.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()));
+                    }
+                    post = snapshot.data!.docs.length;
+                    return SliverPadding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          ((context, index) {
+                            final snap = snapshot.data!.docs[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PostScreen(snap.data()),
+                                ));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.amber,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.r),
+                                  ),
+                                ),
+                                child: CachedImage(
+                                  imageUrl: snap['postImage'],
+                                ),
+                              ),
+                            );
+                          }),
+                          childCount: snapshot.data!.docs.length,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 4.w,
+                          mainAxisSpacing: 4.h,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             );
           },
@@ -79,7 +134,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   children: [
                     SizedBox(width: 35.w),
                     Text(
-                      '0',
+                      post.toString(),
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.bold),
                     ),

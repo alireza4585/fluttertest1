@@ -149,76 +149,82 @@ class _AddPostScreenState extends State<AddPostScreen> {
         backgroundColor: Colors.white,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 375.h,
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    controller: widget.scrollCtr,
-                    itemCount: _mediaList.isEmpty ? _mediaList.length : 1,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 1.h,
-                      crossAxisSpacing: 1.w,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return _mediaList[indexx];
-                    }),
-              ),
-              Container(
-                width: double.infinity,
-                height: 40.h,
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    SizedBox(width: 10.w),
-                    Text(
-                      'Recent',
-                      style: TextStyle(
-                          fontSize: 15.sp, fontWeight: FontWeight.w600),
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10.w),
-                      child: CircleAvatar(
-                        radius: 15.r,
-                        backgroundColor: Colors.grey.shade600,
-                        child: Icon(
-                          Icons.camera_alt_outlined,
-                          color: Colors.white,
-                          size: 20.w,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 375.h,
+                    child: GridView.builder(
+                        shrinkWrap: true,
+                        controller: widget.scrollCtr,
+                        itemCount: _mediaList.isEmpty ? _mediaList.length : 1,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 1.h,
+                          crossAxisSpacing: 1.w,
                         ),
-                      ),
-                    )
-                  ],
-                ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return _mediaList[indexx];
+                        }),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 40.h,
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10.w),
+                        Text(
+                          'Recent',
+                          style: TextStyle(
+                              fontSize: 15.sp, fontWeight: FontWeight.w600),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(right: 10.w),
+                          child: CircleAvatar(
+                            radius: 15.r,
+                            backgroundColor: Colors.grey.shade600,
+                            child: Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.white,
+                              size: 20.w,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20.h, top: 4.h),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      controller: widget.scrollCtr,
+                      itemCount: _mediaList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 1.h,
+                          crossAxisSpacing: 2.w),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                indexx = index;
+                                _file = path[index];
+                                print(_file);
+                              });
+                            },
+                            child: _mediaList[index]);
+                      },
+                    ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 20.h, top: 4.h),
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    controller: widget.scrollCtr,
-                    itemCount: _mediaList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 1.h,
-                        crossAxisSpacing: 2.w),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              indexx = index;
-                              _file = path[index];
-                              print(_file);
-                            });
-                          },
-                          child: _mediaList[index]);
-                    }),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

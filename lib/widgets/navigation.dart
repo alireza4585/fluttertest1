@@ -9,8 +9,10 @@ import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/data/model/user_model.dart';
 import 'package:fluttertest1/screen/add_post.dart';
+import 'package:fluttertest1/screen/add_screen.dart';
 import 'package:fluttertest1/screen/home.dart';
 import 'package:fluttertest1/screen/profile.dart';
+import 'package:fluttertest1/screen/reels_screen.dart';
 import 'package:fluttertest1/screen/search_Screen.dart';
 import 'package:fluttertest1/util/image_save.dart';
 
@@ -102,9 +104,9 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite_outline,
-                size: 28.0.w,
+              icon: Image.asset(
+                'images/instagram-reels-icon.png',
+                height: 20.h,
               ),
               label: '',
             ),
@@ -129,8 +131,8 @@ class _Navigation_WidgetState extends State<Navigation_Widget> {
         children: [
           const Home_Screen(),
           SearchScreen(),
-          const AddPostScreen(),
-          const Home_Screen(),
+          const AddScreen(),
+          const ReelsScreen(),
           BlocProvider(
             create: (context) => ProfileBloc(),
             child: const Profile_Screen(),

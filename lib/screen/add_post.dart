@@ -49,7 +49,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       // success
 //load the album list
       List<AssetPathEntity> albums =
-          await PhotoManager.getAssetPathList(onlyAll: true);
+          await PhotoManager.getAssetPathList(type: RequestType.image);
 
       List<AssetEntity> media = await albums[0]
           .getAssetListPaged(size: 60, page: currentPage); //preloading files
@@ -85,17 +85,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      if (asset.type == AssetType.video)
-                        const Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 5, bottom: 5),
-                            child: Icon(
-                              Icons.videocam,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                      // if (asset.type == AssetType.video)
+                      //   const Align(
+                      //     alignment: Alignment.bottomRight,
+                      //     child: Padding(
+                      //       padding: EdgeInsets.only(right: 5, bottom: 5),
+                      //       child: Icon(
+                      //         Icons.videocam,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 );

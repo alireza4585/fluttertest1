@@ -48,7 +48,7 @@ class _AddScreenState extends State<AddScreen> {
               onPageChanged: onPageChanged,
               children: [
                 AddPostScreen(),
-                AddReels(),
+                AddReelsScreen(),
               ],
             ),
             AnimatedPositioned(

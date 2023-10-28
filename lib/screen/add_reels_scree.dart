@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/screen/addpost_text.dart';
+import 'package:fluttertest1/widgets/video_View.dart';
 
 import 'package:photo_manager/photo_manager.dart';
 
@@ -154,29 +155,9 @@ class _AddReelsScreenState extends State<AddReelsScreen> {
       appBar: AppBar(
         centerTitle: false,
         title: const Text(
-          'New Reels',
+          'New Reel',
           style: TextStyle(color: Colors.black),
         ),
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AddpostTextScreen(_file!)));
-                },
-                child: Text(
-                  'Nex',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          )
-        ],
         elevation: 0,
         backgroundColor: Colors.white,
       ),
@@ -194,14 +175,18 @@ class _AddReelsScreenState extends State<AddReelsScreen> {
                 crossAxisSpacing: 3.w),
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      indexx = index;
-                      _file = path[index];
-                      print(_file);
-                    });
-                  },
-                  child: _mediaList[index]);
+                onTap: () {
+                  setState(() {
+                    indexx = index;
+                    _file = path[index];
+                    print(_file);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VideoView(_file!),
+                    ));
+                  });
+                },
+                child: _mediaList[index],
+              );
             },
           ),
         ),

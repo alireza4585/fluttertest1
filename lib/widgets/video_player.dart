@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 // ignore: camel_case_types
 class videoPlayer extends StatefulWidget {
-  const videoPlayer({super.key});
+  const videoPlayer(VideoPlayerController controller, {super.key});
 
   @override
   State<videoPlayer> createState() => _videoPlayerState();

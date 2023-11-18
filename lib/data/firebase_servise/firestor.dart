@@ -26,23 +26,21 @@ class Firestor_firebase {
   }
 
   Future<Usermodel> getusers() async {
-    try {
-      final user = await _firestore
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .get();
-      final snapuser = user.data()!;
-      return Usermodel(
-        snapuser['username'],
-        snapuser['bio'],
-        snapuser['email'],
-        snapuser['profileImage'],
-        snapuser['followers'],
-        snapuser['following'],
-      );
-    } on FirebaseException catch (e) {
-      throw exceptions(e.message.toString());
-    }
+    // try {
+    final user =
+        await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
+    final snapuser = user.data()!;
+    return Usermodel(
+      snapuser['username'],
+      snapuser['bio'],
+      snapuser['email'],
+      snapuser['profileImage'],
+      snapuser['followers'],
+      snapuser['following'],
+    );
+    // } on FirebaseException catch (e) {
+    //   throw exceptions(e.message.toString());
+    // }
   }
 
   // List getAllPost(AsyncSnapshot snapshot) {
@@ -82,6 +80,26 @@ class Firestor_firebase {
       'location': location,
       'uid': _auth.currentUser!.uid,
       'postId': uid,
+      'like': [],
+      'time': data
+    });
+    return true;
+  }
+
+  Future<bool> createReel({
+    required String ReelVideo,
+    required String caption,
+  }) async {
+    var uid = const Uuid().v4();
+    DateTime data = new DateTime.now();
+    Usermodel _usermodel = await getusers();
+    await _firestore.collection('Reels').doc(uid).set({
+      'ReelVideo': ReelVideo,
+      'username': _usermodel.username,
+      'profileImage': _usermodel.profileImage,
+      'caption': caption,
+      'uid': _auth.currentUser!.uid,
+      'ReelId': uid,
       'like': [],
       'time': data
     });

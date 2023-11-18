@@ -44,7 +44,7 @@ class _Post_widgetsState extends State<Post_widgets> {
                 style: TextStyle(fontSize: 13.sp),
               ),
               subtitle: Text(
-                widget.snapshot['location'],
+                widget.snapshot['location'] ?? '',
                 style: TextStyle(fontSize: 11.sp),
               ),
               trailing: const Icon(Icons.more_horiz),

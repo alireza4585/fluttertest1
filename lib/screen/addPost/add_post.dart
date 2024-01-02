@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertest1/screen/addpost_text.dart';
+import 'package:fluttertest1/screen/addPost/addpost_text.dart';
 
 import 'package:photo_manager/photo_manager.dart';
 

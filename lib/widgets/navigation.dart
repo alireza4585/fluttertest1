@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/bloc/profile/bloc/profile_bloc.dart';
 import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/data/model/user_model.dart';
-import 'package:fluttertest1/screen/add_post.dart';
+import 'package:fluttertest1/screen/addPost/add_post.dart';
 import 'package:fluttertest1/screen/add_screen.dart';
 import 'package:fluttertest1/screen/home.dart';
 import 'package:fluttertest1/screen/profile.dart';

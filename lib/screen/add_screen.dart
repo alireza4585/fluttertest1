@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertest1/screen/add_post.dart';
-import 'package:fluttertest1/screen/add_reels_scree.dart';
+import 'package:fluttertest1/screen/addPost/add_post.dart';
+import 'package:fluttertest1/screen/reels/add_reels_scree.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({super.key});

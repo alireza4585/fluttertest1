@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/data/firebase_servise/storage.dart';
-import 'package:fluttertest1/screen/addpost_text.dart';
+import 'package:fluttertest1/screen/addPost/addpost_text.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 

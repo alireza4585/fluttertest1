@@ -24,6 +24,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
               .snapshots(),
           builder: (context, snapshot) {
             return PageView.builder(
+              scrollDirection: Axis.vertical,
               controller: PageController(
                 initialPage: 0,
                 viewportFraction: 1,

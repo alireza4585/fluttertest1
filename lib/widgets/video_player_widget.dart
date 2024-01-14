@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/util/image_save.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerItem extends StatefulWidget {
@@ -12,6 +13,7 @@ class VideoPlayerItem extends StatefulWidget {
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   late VideoPlayerController controller;
+  bool paly = true;
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -30,14 +32,38 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
-        Container(
-          width: double.infinity,
-          height: 812.h,
-          decoration: BoxDecoration(color: Colors.black),
-          child: VideoPlayer(controller),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              paly = !paly;
+            });
+            if (paly == true) {
+              controller.play();
+            } else if (paly == false) {
+              controller.pause();
+            }
+          },
+          child: Container(
+            width: double.infinity,
+            height: 812.h,
+            decoration: BoxDecoration(color: Colors.black),
+            child: VideoPlayer(controller),
+          ),
         ),
+        if (paly == false)
+          Center(
+            child: CircleAvatar(
+              backgroundColor: Colors.white30,
+              radius: 35.r,
+              child: Icon(
+                Icons.pause,
+                size: 35.w,
+                color: Colors.white,
+              ),
+            ),
+          ),
         Positioned(
-          top: 450.h,
+          top: 430.h,
           right: 15.w,
           child: Column(
             children: [
@@ -54,7 +80,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      '0',
+                      widget.snapshot['like'].length.toString(),
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: Colors.white,
@@ -76,7 +102,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      '0',
+                      widget.snapshot['like'].length.toString(),
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: Colors.white,
@@ -107,6 +133,66 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 40.h,
+          left: 10.w,
+          right: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  ClipOval(
+                    child: SizedBox(
+                      height: 35.h,
+                      width: 35.w,
+                      child: CachedImage(
+                        imageUrl: widget.snapshot['profileImage'],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.h),
+                  Text(
+                    widget.snapshot['username'],
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 10.h),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 60.w,
+                    height: 25.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(5.r),
+                    ),
+                    child: Text(
+                      'Follow',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.h,
+                width: 10.w,
+              ),
+              Text(
+                widget.snapshot['caption'],
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  color: Colors.white,
+                ),
+              )
             ],
           ),
         ),

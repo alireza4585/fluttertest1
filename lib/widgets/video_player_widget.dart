@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/util/image_save.dart';
+import 'package:fluttertest1/widgets/commentes.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerItem extends StatefulWidget {
@@ -95,10 +96,35 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
               Container(
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.comment,
-                      color: Colors.white,
-                      size: 28.w,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            // barrierColor: Colors.transparent,
+                            context: context,
+                            builder: (context) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                                child: DraggableScrollableSheet(
+                                  initialChildSize: 1,
+                                  minChildSize: 0.2,
+                                  maxChildSize: 1,
+                                  builder: (context, controler) {
+                                    return Comment(
+                                        widget.snapshot['ReelId'], 'Reels');
+                                  },
+                                ),
+                              );
+                            });
+                      },
+                      child: Icon(
+                        Icons.comment,
+                        color: Colors.white,
+                        size: 28.w,
+                      ),
                     ),
                     SizedBox(height: 3.h),
                     Text(

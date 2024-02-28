@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertest1/util/image_save.dart';
+import 'package:fluttertest1/widgets/commentes.dart';
 import 'package:intl/intl.dart';
 
 class Post_widgets extends StatefulWidget {
@@ -70,9 +71,33 @@ class _Post_widgetsState extends State<Post_widgets> {
                   SizedBox(width: 14.w),
                   const Icon(Icons.favorite_outline),
                   SizedBox(width: 17.w),
-                  Image.asset(
-                    'images/comment.webp',
-                    height: 25.h,
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          // barrierColor: Colors.transparent,
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: DraggableScrollableSheet(
+                                initialChildSize: 1,
+                                minChildSize: 0.2,
+                                maxChildSize: 1,
+                                builder: (context, controler) {
+                                  return Comment(
+                                      widget.snapshot['postId'], 'posts');
+                                },
+                              ),
+                            );
+                          });
+                    },
+                    child: Image.asset(
+                      'images/comment.webp',
+                      height: 25.h,
+                    ),
                   ),
                   SizedBox(width: 17.w),
                   Image.asset('images/send.jpg'),

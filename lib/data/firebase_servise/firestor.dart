@@ -105,4 +105,26 @@ class Firestor_firebase {
     });
     return true;
   }
+
+  Future<bool> comment({
+    required String comment,
+    required String type,
+    required String uid,
+  }) async {
+    var uidd = const Uuid().v4();
+    DateTime data = new DateTime.now();
+    Usermodel _usermodel = await getusers();
+    await _firestore
+        .collection(type)
+        .doc(uid)
+        .collection('comment')
+        .doc(uidd)
+        .set({
+      'username': _usermodel.username,
+      'profileImage': _usermodel.profileImage,
+      'comment': comment,
+      'commentUid': uidd,
+    });
+    return true;
+  }
 }

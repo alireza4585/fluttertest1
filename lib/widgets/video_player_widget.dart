@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertest1/data/firebase_servise/firestor.dart';
 import 'package:fluttertest1/util/image_save.dart';
 import 'package:fluttertest1/widgets/commentes.dart';
+import 'package:fluttertest1/widgets/like_animation.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerItem extends StatefulWidget {
@@ -14,10 +17,14 @@ class VideoPlayerItem extends StatefulWidget {
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   late VideoPlayerController controller;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   bool paly = true;
+  final user = '';
+  bool isLikeAnimating = false;
   void initState() {
     // TODO: implement initState
     super.initState();
+
     // ignore: deprecated_member_use
     controller = VideoPlayerController.network(widget.snapshot['ReelVideo'])
       ..initialize().then((_) {
@@ -26,6 +33,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
         controller.setVolume(1.0); // Adjust the volume here (0.0 to 1.0)
         controller.play();
       });
+    final user = _auth.currentUser!.uid;
   }
 
   @override
@@ -34,6 +42,17 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
       alignment: Alignment.bottomRight,
       children: [
         GestureDetector(
+          onDoubleTap: () {
+            Firestor_firebase().likePost(
+              widget.snapshot['ReelId'].toString(),
+              user,
+              widget.snapshot['like'],
+              'Reels',
+            );
+            setState(() {
+              isLikeAnimating = true;
+            });
+          },
           onTap: () {
             setState(() {
               paly = !paly;
@@ -63,6 +82,28 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
               ),
             ),
           ),
+        Center(
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 200),
+            opacity: isLikeAnimating ? 1 : 0,
+            child: LikeAnimation(
+              isAnimating: isLikeAnimating,
+              duration: const Duration(
+                milliseconds: 400,
+              ),
+              onEnd: () {
+                setState(() {
+                  isLikeAnimating = false;
+                });
+              },
+              child: const Icon(
+                Icons.favorite,
+                color: Colors.white,
+                size: 100,
+              ),
+            ),
+          ),
+        ),
         Positioned(
           top: 430.h,
           right: 15.w,
@@ -74,10 +115,28 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
               Container(
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                      size: 28.w,
+                    LikeAnimation(
+                      isAnimating: widget.snapshot['like'].contains(user),
+                      iconlike: true,
+                      child: IconButton(
+                        icon: widget.snapshot['like'].contains(user)
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 30,
+                              )
+                            : const Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                        onPressed: () => Firestor_firebase().likePost(
+                          widget.snapshot['ReelId'].toString(),
+                          user,
+                          widget.snapshot['like'],
+                          'Reels',
+                        ),
+                      ),
                     ),
                     SizedBox(height: 3.h),
                     Text(

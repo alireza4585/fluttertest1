@@ -71,6 +71,7 @@ class _Post_widgetsState extends State<Post_widgets> {
               widget.snapshot['postId'].toString(),
               user,
               widget.snapshot['like'],
+              'posts',
             );
             setState(() {
               isLikeAnimating = true;
@@ -135,6 +136,7 @@ class _Post_widgetsState extends State<Post_widgets> {
                         widget.snapshot['postId'].toString(),
                         user,
                         widget.snapshot['like'],
+                        'posts',
                       ),
                     ),
                   ),
